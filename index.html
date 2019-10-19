@@ -7,13 +7,12 @@
 
 	<body>
 		<h2>Tic-Tac-Toe</h2>
-		<div id="restartBtnWrapper">
-			<button id="restartBtn" class="actionBtn" type="button"  onclick="restartGame()">Restart Game</button>
-		</div>		
 		<div id="selectUserSymWrapper">
-			Player One:  <input id="playerOne" type="text" name="playerOne" maxlength="1" size="1"><br>
-			Player Two:  <input id="playerTwo" type="text" name="playerTwo" maxlength="1" size="1"><br>
-			<button id="setUserSymbolBtn" class="actionBtn" type="button"  onclick="setUserSymbols()">Set Symbols</button>
+			Player One:  <input id="playerOne" class="symText" type="text" name="playerOne" maxlength="1" size="1"><br>
+			Player Two:  <input id="playerTwo" class="symText" type="text" name="playerTwo" maxlength="1" size="1"><br>
+			<button id="clearUserSymbols" class="actionBtn symBtn" type="button"  onclick="clearUserSymbols()">Clear Symbols</button>
+			<button id="setUserSymbolBtn" class="actionBtn symBtn" type="button"  onclick="setUserSymbols()">Set Symbols</button>
+			<button id="restartBtn" class="actionBtn" type="button"  onclick="restartGame()">Restart Game</button>
 		</div>
 		<div>
 			<input id="button1" class="btn" type="button" value=" " onclick="boardClick(1)">
@@ -49,10 +48,6 @@
 				padding: 5px;
 				font-size: 30px;
 				margin-bottom: 4px;
-			}
-
-			#restartBtnWrapper {
-				float: right;
 			}
 
 			#selectUserSymWrapper {
@@ -91,8 +86,12 @@
 				clickedBtnElement = '';
 				currentPlayer = '';
 				isGameEndAlert = true;
-				$('.btn').prop('disabled',false);
 				$('.btn').val(' ');
+				$("#playerOne").val('');
+				$("#playerTwo").val('');
+				$('.btn').prop('disabled',false);
+				$('.symText').prop('disabled',false);
+				$('.symBtn').prop('disabled',false);
 			}
 
 			function setUserSymbols() {
@@ -104,8 +103,17 @@
 					alert("Both players can't have same symbol");
 				}
 			}
+			
+			function clearUserSymbols() {
+				$("#playerOne").val('');
+				$("#playerTwo").val('');
+				$('.symText').prop('disabled',false);
+				$('.symBtn').prop('disabled',false);
+			}
 
 			function boardClick(boxNum) {
+				$('.symText').prop('disabled',true);
+				$('.symBtn').prop('disabled',true);
 				++numOfUserClicks;
 				clickedBtnElement = $('#button'+boxNum);
 				clickedBtnElement.attr("disabled", true);
