@@ -87,8 +87,6 @@
 				currentPlayer = '';
 				isGameEndAlert = true;
 				$('.btn').val(' ');
-				$("#playerOne").val('');
-				$("#playerTwo").val('');
 				$('.btn').prop('disabled',false);
 				$('.symText').prop('disabled',false);
 				$('.symBtn').prop('disabled',false);
@@ -105,6 +103,8 @@
 			}
 			
 			function clearUserSymbols() {
+				playerOneSym = '';
+				playerTwoSym = '';
 				$("#playerOne").val('');
 				$("#playerTwo").val('');
 				$('.symText').prop('disabled',false);
