@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Tic-Tac-Toe Game</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<h2>Tic-Tac-Toe</h2>
+		<div id="restartBtnWrapper">
+			<button id="restartBtn" class="actionBtn" type="button"  onclick="restartGame()">Restart Game</button>
+		</div>		
+		<div id="selectUserSymWrapper">
+			Player One:  <input id="playerOne" type="text" name="playerOne" maxlength="1" size="1"><br>
+			Player Two:  <input id="playerTwo" type="text" name="playerTwo" maxlength="1" size="1"><br>
+			<button id="setUserSymbolBtn" class="actionBtn" type="button"  onclick="setUserSymbols()">Set Symbols</button>
+		</div>
+		<div>
+			<input id="button1" class="btn" type="button" value=" " onclick="boardClick(1)">
+			<input id="button2" class="btn" type="button" value=" " onclick="boardClick(2)">
+			<input id="button3" class="btn" type="button" value=" " onclick="boardClick(3)">
+		</div>
+		<div>
+			<input id="button4" class="btn" type="button" value=" " onclick="boardClick(4)">
+			<input id="button5" class="btn" type="button" value=" " onclick="boardClick(5)">
+			<input id="button6" class="btn" type="button" value=" " onclick="boardClick(6)">
+		</div>
+		<div>
+			<input id="button7" class="btn" type="button" value=" " onclick="boardClick(7)">
+			<input id="button8" class="btn" type="button" value=" " onclick="boardClick(8)">
+			<input id="button9" class="btn" type="button" value=" " onclick="boardClick(9)">
+		</div>
+
+		<style>
+			input[type=text] {
+				width: 70%;
+				padding: 12px 20px;
+				margin: 8px 0;
+				display: inline-block;
+				border: 1px solid #CCC;
+				border-radius: 4px;
+				box-sizing: border-box;
+			    text-transform: uppercase;
+			}
+
+			input[type=button] {
+				width: 50px;
+				height: 50px;
+				padding: 5px;
+				font-size: 30px;
+				margin-bottom: 4px;
+			}
+
+			#restartBtnWrapper {
+				float: right;
+			}
+
+			#selectUserSymWrapper {
+				margin-bottom: 50px;
+			}
+
+			.actionBtn {
+				background-color: #4CAF50;
+				border-radius: 4px;
+				border: none;
+				color: white;
+				padding: 15px 32px;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 16px;
+				margin-top: 15px;
+			}
+		</style>
+
+		<script>
+
+			var winArray = ['123', '456', '789', '147', '258', '369', '159', '357'];
+			var numOfUserClicks = 0;
+			var playerOneArray = [];
+			var playerTwoArray = [];
+			var clickedBtnElement;
+			var currentPlayer;
+			var playerOneSym, playerTwoSym;
+			var isGameEndAlert = true;
+
+			function restartGame() {
+				numOfUserClicks = 0;
+				playerOneArray = [];
+				playerTwoArray = [];
+				clickedBtnElement = '';
+				currentPlayer = '';
+				isGameEndAlert = true;
+				$('.btn').prop('disabled',false);
+				$('.btn').val(' ');
+			}
+
+			function setUserSymbols() {
+				if($("#playerOne").val().toUpperCase() !== $("#playerTwo").val().toUpperCase()) {
+					playerOneSym = $("#playerOne").val().toUpperCase();
+					playerTwoSym = $("#playerTwo").val().toUpperCase();
+					alert("Your symbols have been successfully set");
+				} else {
+					alert("Both players can't have same symbol");
+				}
+			}
+
+			function boardClick(boxNum) {
+				++numOfUserClicks;
+				clickedBtnElement = $('#button'+boxNum);
+				clickedBtnElement.attr("disabled", true);
+				if(numOfUserClicks <= 9) {
+					if(numOfUserClicks % 2) {
+						currentPlayer = 'Player one';
+						clickedBtnElement.val(playerOneSym ? playerOneSym : 'O');
+						playerOneArray.push(boxNum);
+					} else {
+						currentPlayer = 'Player two';
+						clickedBtnElement.val(playerTwoSym ? playerTwoSym : 'X');
+						playerTwoArray.push(boxNum);
+					}
+					if(numOfUserClicks >= 5) {
+						checkForWinner(numOfUserClicks % 2 ? playerOneArray : playerTwoArray);
+					}
+					if(numOfUserClicks === 9 && isGameEndAlert) {
+						setTimeout(function(){ alert("Game has ended in draw !!!"); }, 100);
+					}
+				} else {
+					setTimeout(function(){ alert("Game has ended in draw !!!"); }, 100);
+				}
+			}
+
+			function checkForWinner(player) {
+				player.sort();
+				var loc = player.join('');
+				if(loc.length > 3) {
+					var len = winArray.length;
+					for(i=0; i<len; i++) {
+						var winnerIndex = 0;
+						var currSplit = winArray[i].split('');
+						for(j=0; j<=3; j++) {
+							if(loc.indexOf(currSplit[j]) > -1) {
+								++winnerIndex;
+								if(winnerIndex === 3) {
+									isGameEndAlert = false;
+									winner();
+									break;
+								}
+							}
+						}
+					}
+				} else {
+					if(winArray.indexOf(loc) > -1) {
+						winner();
+					}
+				}
+			}
+
+			function winner() {
+				$('.btn').prop('disabled',true);
+				setTimeout(function(){ alert(currentPlayer +' has won the match !!!'); }, 100);
+			}
+
+		</script>
+	</body>
+</html>
